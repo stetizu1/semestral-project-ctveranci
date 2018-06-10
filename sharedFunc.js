@@ -137,12 +137,12 @@ const setState = (state) => {
         let time = timeOption.options[timeOption.selectedIndex].value;
 
         if(numPlayers === 1) {
-            gameWindow = new GameWindow(document.getElementById("gameContent"), time, 1, map, player1Name);
+            gameWindow = new GameWindow(document.getElementById("gameContent"), time, map, player1Name);
         } else {
             let name2Field = document.getElementById("playerTwoName");
             if (name2Field.value.length > 0) player2Name = name2Field.value;
 
-            gameWindow = new GameWindow(document.getElementById("gameContent"), time, 2, map, player1Name, player2Name);
+            gameWindow = new GameWindow(document.getElementById("gameContent"), time, map, player1Name, player2Name);
         }
         gameWindow.run();
     }
@@ -150,4 +150,129 @@ const setState = (state) => {
     else if (state === "#leaderBoardContent"){
         createTables(leaderBoardSection);
     }
+};
+const setMenu = (state) => {
+    if(state === "#logoContent"){
+        let radiosToUncheck = document.getElementsByName("radioButton");
+        for(let i = 0; i < radios.length; i++) {
+            radiosToUncheck[i].checked = false;
+        }
+        return;
+    }
+    let menuId = state.replace("Content", "");
+    const currentMenuOption = document.querySelector(menuId);
+    currentMenuOption.checked = true;
+};
+
+const createSvg = (createdMap) => {
+    let svg = document.querySelector("#svgMap");
+    const ROWS = 12;
+    const COLUMNS = 20;
+
+    //create default map
+    for (let i = 0; i < ROWS; i++) {
+        let line = [];
+        for (let j = 0; j < COLUMNS; j++) {
+            line.push(-2);
+
+        }
+        createdMap.push(line);
+    }
+
+    //create svgMap
+    const svgNS = "http://www.w3.org/2000/svg";
+    for (let i = 0; i < ROWS; i++) {
+        for (let j = 0; j < COLUMNS; j++) {
+            //<rect x="0" y="0" width="1" height="1"></rect>
+            let rect = document.createElementNS(svgNS, 'rect');
+            rect.setAttributeNS('', 'x', '' + j);
+            rect.setAttributeNS('', 'y', '' + i);
+            rect.setAttributeNS('', 'height', '1');
+            rect.setAttributeNS('', 'width', '1');
+
+            let color = "";
+            if (i % 2 === 0) {
+                if (j % 2 === 0) color = "#2a7f35";
+                else color = "#2c8d3d";
+            } else {
+                if (j % 2 === 0) color = "#2c8d3d";
+                else color = "#2a7f35";
+            }
+            rect.setAttributeNS('', 'fill', color);
+
+            if (i !== ROWS - 1 && j !== COLUMNS -1) {
+                rect.addEventListener("click", () => {
+
+                    let line = parseInt(rect.getAttribute("y"));
+                    let col = parseInt(rect.getAttribute("x"));
+
+                    //already tree there
+                    if(createdMap[line][col] !== -2 ||
+                        createdMap[line + 1][col] !== -2 ||
+                        createdMap[line][col + 1] !== -2 ||
+                        createdMap[line + 1][col + 1] !== -2
+                    ) return;
+
+                    let treeNumber = 0;
+                    let treesRadioButtons = document.getElementsByName("treeOption");
+                    for(let i = 0; i < 9; i++){
+                        if (treesRadioButtons[i].checked) treeNumber = parseInt(treesRadioButtons[i].value);
+                    }
+
+                    createdMap[line][col] = treeNumber;
+                    createdMap[line + 1][col] = treeNumber;
+                    createdMap[line][col + 1] = treeNumber;
+                    createdMap[line + 1][col + 1] = treeNumber;
+
+                    let g = document.createElementNS(svgNS, 'g');
+
+                    let circle = document.createElementNS(svgNS, 'circle');
+                    circle.setAttributeNS('', 'cx', (col+1) + '');
+                    circle.setAttributeNS('', 'cy', (line+1) + '');
+                    circle.setAttributeNS('', 'r', '1');
+                    circle.setAttributeNS('', 'fill', '#8d0002');
+
+                    let text = document.createElementNS(svgNS, 'text');
+                    text.setAttributeNS('', 'x', (col+1) + '');
+                    text.setAttributeNS('', 'y', (line+1.15) + '');
+                    text.setAttributeNS('', 'font-family', 'Verdana');
+                    text.setAttributeNS('', 'font-size', '0.5');
+                    text.setAttributeNS('', 'text-anchor', 'middle');
+                    text.setAttributeNS('', 'fill', '#FFFFFF');
+                    text.innerHTML = treeNumber;
+
+                    g.addEventListener("click", () =>{
+                        let l = parseInt(circle.getAttribute("cy")) - 1;
+                        let c = parseInt(circle.getAttribute("cx")) - 1;
+                        createdMap[l][c] = -2;
+                        createdMap[l + 1][c] = -2;
+                        createdMap[l][c + 1] = -2;
+                        createdMap[l + 1][c + 1] = -2;
+                        svg.removeChild(g);
+                        console.log(createdMap);
+                    });
+
+                    g.appendChild(circle);
+                    g.appendChild(text);
+
+                    svg.appendChild(g)
+
+                });
+            }
+            svg.appendChild(rect);
+        }
+    }
+};
+
+const download = (filename, text) =>{
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 };

@@ -1,7 +1,13 @@
 const BULLET_SIZE = 10;
-class Bullet{
+class Bullet {
+    /**
+     * Creates bullet for player
+     *
+     * @param direction - in which will bullet move
+     * @param owner - id of player whose bullet it is
+     * @param map - map that bullet is on
+     */
     constructor(direction, owner, map) {
-
         this.map = map;
 
         this._delete = false;
@@ -9,27 +15,14 @@ class Bullet{
         this._owner = owner;
         this._speed = 20;
 
-        this.setDirection();
+        this._setMovement();
 
         this._drawX = this._x + this.map.START_X;
         this._drawY = this._y + this.map.START_Y;
     }
-    get delete(){
-        return this._delete;
-    }
-    set delete(del){
-        this._delete = del;
-    }
 
-    setPosition(mapX, mapY){
-        this._mapX = mapX;
-        this._mapY = mapY;
-
-        this._x = this._mapX * this.map.FIELD_SIZE + 30;
-        this._y = this._mapY * this.map.FIELD_SIZE + 30;
-    }
-
-    setDirection(){
+    //sets dx and dy due to direction
+    _setMovement(){
         switch (this._direction){
             case LEFT:
                 this._dx = -this._speed;
@@ -50,23 +43,47 @@ class Bullet{
         }
     }
 
+    get delete(){
+        return this._delete;
+    }
+    set delete(del){
+        this._delete = del;
+    }
+
+    /**
+     * Set position of bullet due to map coordinates
+     *
+     * @param mapX - x map coordinate
+     * @param mapY - y map coordinate
+     */
+    setPosition(mapX, mapY){
+        this._mapX = mapX;
+        this._mapY = mapY;
+
+        this._x = this._mapX * this.map.FIELD_SIZE + 30;
+        this._y = this._mapY * this.map.FIELD_SIZE + 30;
+    }
+
+    /**
+     * Controls if bullet hits player
+     *
+     * @param player to control
+     * @returns {boolean} true if target player is on same position as bullet
+     */
     intersects(player){
         return this._owner !== player.id && this._mapX === player.mapX && this._mapY === player.mapY;
     }
 
+    /**
+     * Updates bullets position
+     * should be called every tick
+     */
     update(){
         //delete if out of bounds
         if(!this.map.canFire(this._mapX, this._mapY)){
             this._delete = true;
             return;
         }
-        /*
-        if(this._x < - BULLET_SIZE / 2 || this._x > MAP_WIDTH + BULLET_SIZE / 2 ||
-            this._y < - BULLET_SIZE || this._y > MAP_HEIGHT + BULLET_SIZE / 2){
-            this._delete = true;
-            return;
-        }
-        */
         this._x += this._dx;
         this._y += this._dy;
 
@@ -76,6 +93,13 @@ class Bullet{
         this._drawX = this._x + this.map.START_X - (BULLET_SIZE / 2);
         this._drawY = this._y + this.map.START_Y - (BULLET_SIZE / 2);
     }
+
+    /**
+     * draws bullet on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
     draw(ctx) {
         ctx.fillStyle = "#fbff00";
         ctx.fillRect(this._drawX, this._drawY, BULLET_SIZE, BULLET_SIZE);

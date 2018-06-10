@@ -1,17 +1,29 @@
 const TIMER_WIDTH = MAP_WIDTH + 10;
 const TIMER_HEIGHT = 120;
 
-class Timer{
+class Timer {
+    /**
+     * Creates status bar for game
+     *
+     * @param START_X - start for x-axis on canvas
+     * @param START_Y - start for y-axis on canvas
+     * @param time - time for game
+     */
     constructor(START_X, START_Y, time) {
         this.START_X = START_X;
         this.START_Y = START_Y;
         this._secondSet = false;
         this._time = time;
     }
+
     get time(){
         return this._time;
     }
 
+    /**
+     * Updates time on timer
+     * should be called every tick
+     */
     update(){
         if(!this._secondSet){
             this._secondSet = true;
@@ -22,6 +34,12 @@ class Timer{
         }
     }
 
+    /**
+     * Draws timer on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
     draw(ctx){
         //draw frame
         ctx.fillStyle = "#447573";

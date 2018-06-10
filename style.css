@@ -236,12 +236,16 @@ section:not(#gameContent):not(#logoContent) {
 
 /*introduction style*/
 #introductionContent {
-    text-align: center;
     color: #caf8d6;
+    max-width: 50%;
 }
 
-#introductionContent h2{
-    text-align: left;
+#introductionContent #videoDiv {
+    text-align: center;
+}
+
+#introductionContent h3{
+    text-align: center;
 }
 
 #introductionContent article a{
@@ -284,7 +288,7 @@ section:not(#gameContent):not(#logoContent) {
     font-size: inherit;
 }
 
-section form fieldset input[type="text"]{
+#settingsContent form fieldset input[type="text"]{
     height: 20px;
     width: 50%;
     color: #c5ffc9;
@@ -406,6 +410,10 @@ table * tr > * {
     background-color: #b8f1d2;
 }
 
+#mapEditorContent > .treeLabel:nth-child(3){
+    margin: 0 0 0 8px;
+}
+
 #mapEditorContent > .treeLabel:nth-child(5){
     background-position-x: -100px;
 }
@@ -444,4 +452,25 @@ table * tr > * {
     cursor: pointer;
 }
 
+#mapEditorContent form label {
+    margin-left: 15px;
+}
 
+#mapEditorContent form input[type="text"]{
+    height: 20px;
+    width: 30%;
+    color: #c5ffc9;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #c5ffc9;
+}
+
+#mapEditorContent form button {
+    float: right;
+    margin: 5px 15px;
+    padding: 5px 15px;
+    background-color: #257c48;
+    color: #aeebc5;
+    border: none;
+    border-radius: 5px;
+}

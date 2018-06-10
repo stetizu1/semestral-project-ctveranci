@@ -1,4 +1,9 @@
 class Game {
+    /**
+     * Creates game state
+     *
+     * @param gameStateManager - manager that controls game states
+     */
     constructor(gameStateManager) {
         this._gameStateManager = gameStateManager;
         this._BG_MUSIC = new Audio("sound/Bedtime Story (Pillow Bros).mp3");
@@ -40,39 +45,45 @@ class Game {
         return this._players;
     }
 
-    update(){
-        if(this._timer.time < 0){
-            this._BG_MUSIC.pause();
-            this._gameStateManager.currentState = "END";
-        }
-        for(let i = 0; i < this.KEYS.length; i++) {
-            this._handleInput(this.KEYS[i], this._players[i]);
-        }
-        for(let i = 0; i < this._players.length; i++) {
-            this._players[i].update();
-            this._players[i].checkAttack(this._players);
-        }
-        for (let i = 0; i < this._playersStatusBar.length; i++) {
-            this._playersStatusBar[i].update();
-        }
-        this._timer.update();
-    }
-
+    /**
+     * Stops music playing in game
+     */
     stopMusic(){
         this._BG_MUSIC.pause();
     }
 
-    draw(ctx) {
-        this.map.draw(ctx);
-        for (let i = 0; i < this._players.length; i++) {
-            this._players[i].draw(ctx);
+    /**
+     * Updates game state
+     * should be called every tick
+     */
+    update(){
+        //ends after time is done
+        if(this._timer.time < 0){
+            this._BG_MUSIC.pause();
+            this._gameStateManager.currentState = "END";
         }
+
+        //handles key input
+        for(let i = 0; i < this.KEYS.length; i++) {
+            this._handleInput(this.KEYS[i], this._players[i]);
+        }
+
+        //updates players
+        for(let i = 0; i < this._players.length; i++) {
+            this._players[i].update();
+            this._players[i].checkAttack(this._players);
+        }
+
+        //updates status bars
         for (let i = 0; i < this._playersStatusBar.length; i++) {
-            this._playersStatusBar[i].draw(ctx);
+            this._playersStatusBar[i].update();
         }
-        this._timer.draw(ctx);
+
+        //update timer
+        this._timer.update();
     }
 
+    //controls given player with given keys
     _handleInput(keys, player) {
         switch (keys.pressed) {
             case keys.LEFT:
@@ -97,5 +108,27 @@ class Game {
         keys.pressed = null;
     }
 
+    /**
+     * Draws game state on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
+    draw(ctx) {
+        //draw map (reload)
+        this.map.draw(ctx);
 
+        //draw players
+        for (let i = 0; i < this._players.length; i++) {
+            this._players[i].draw(ctx);
+        }
+
+        //draw status bars
+        for (let i = 0; i < this._playersStatusBar.length; i++) {
+            this._playersStatusBar[i].draw(ctx);
+        }
+
+        //draw timer
+        this._timer.draw(ctx);
+    }
 }

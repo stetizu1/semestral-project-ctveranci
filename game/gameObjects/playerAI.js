@@ -1,68 +1,83 @@
 class PlayerAI extends Player {
 
+    /**
+     * Creates AI player with given if, map, color and eye color
+     *
+     * @param id - id of player
+     * @param map - map that player is on
+     * @param color - color of player
+     * @param eyeColor - color of player's eyes
+     */
     constructor(id, map, color, eyeColor) {
         super(id, map, color, eyeColor);
         this.canPlay = true;
         this.willPlay = false;
     }
 
+    /**
+     * Updates AI player's and it's bullets position and set it's next action.
+     * should be called every tick
+     */
     update(){
         super.update();
-        this.updateAI()
-    }
-    updateAI(){
-        this.willPlay = false;
-        this.checkUp();
-        this.checkDown();
-        this.checkLeft();
-        this.checkRight();
+        this._updateAI()
     }
 
-    checkUp(){
+    //controls position around AI
+    _updateAI(){
+        this.willPlay = false;
+        this._checkUp();
+        this._checkDown();
+        this._checkLeft();
+        this._checkRight();
+    }
+
+    _checkUp(){
         if(this.canPlay){
             for(let i = 0; i < this.mapY; i++){
-                this.checkPosition(this.mapX, i);
+                this._checkPosition(this.mapX, i);
             }
             if(this.willPlay){
-                this.play(UP);
+                this._play(UP);
             }
         }
     }
 
-    checkDown(){
+    _checkDown(){
         if(this.canPlay){
             for(let i = this.map.ROWS - 1; i > this.mapY; i--){
-                this.checkPosition(this.mapX, i);
+                this._checkPosition(this.mapX, i);
             }
             if(this.willPlay){
-                this.play(DOWN);
+                this._play(DOWN);
             }
         }
     }
 
-    checkLeft(){
+    _checkLeft(){
         if(this.canPlay){
             for(let i = 0; i < this.mapX; i++){
-                this.checkPosition(i, this.mapY);
+                this._checkPosition(i, this.mapY);
             }
             if(this.willPlay){
-                this.play(LEFT);
+                this._play(LEFT);
             }
         }
     }
 
-    checkRight(){
+    _checkRight(){
         if(this.canPlay){
             for(let i = this.map.COLUMNS - 1; i > this.mapX; i--){
-                this.checkPosition(i, this.mapY);
+                this._checkPosition(i, this.mapY);
             }
             if(this.willPlay){
-                this.play(RIGHT);
+                this._play(RIGHT);
             }
         }
     }
 
-    checkPosition(x, y){
+    //sets this.willPlay to true if there is non-blocked player on given position, false if there is tree
+    _checkPosition(x, y){
         if(this.map.getContentOnPosition(x, y) === -1){
             this.willPlay = true;
         }
@@ -70,7 +85,9 @@ class PlayerAI extends Player {
             this.willPlay = false;
         }
     }
-    play(direction){
+
+    //AI will perform action
+    _play(direction){
         this.canPlay = false;
         if(this.direction !== direction) {
             setTimeout(() => {

@@ -5,6 +5,15 @@ const UP = positions[2];
 const DOWN = positions[3];
 
 class Player {
+    /**
+     * Creates player with given if, map, color and eye color
+     *
+     * @param id - id of player
+     * @param map - map that player is on
+     * @param color - color of player
+     * @param eyeColor - color of player's eyes
+     * @param name - name of player
+     */
     constructor(id, map, color, eyeColor, name=null) {
         this._id = id;
         this.map = map;
@@ -30,6 +39,38 @@ class Player {
         this.setRandomPosition();
     }
 
+    get id() {
+        return this._id;
+    }
+
+    get mapX() {
+        return this._mapX;
+    }
+    get mapY() {
+        return this._mapY;
+    }
+
+    set direction(key){
+        this._prevDirection = this._direction;
+        this._direction = key;
+    }
+
+    get direction(){
+        return this._direction;
+    }
+
+    get deaths(){
+        return this._deaths;
+    }
+
+    get kills(){
+        return this._kills;
+    }
+
+    /**
+     * Set player to random position
+     * should be called at every re-/spawn
+     */
     setRandomPosition(){
         this._mapX = Math.floor(Math.random() * this.map.COLUMNS);
         this._mapY = Math.floor(Math.random() * this.map.ROWS);
@@ -51,29 +92,11 @@ class Player {
         this.map.blockPositionWithPlayer(this._mapX, this._mapY);
     }
 
-
-    get id() {
-        return this._id;
-    }
-
-    get mapX() {
-        return this._mapX;
-    }
-    get mapY() {
-        return this._mapY;
-    }
-
-    update(){
-        this._x = this._mapX * this.map.FIELD_SIZE + 5;
-        this._y = this._mapY * this.map.FIELD_SIZE + 5;
-
-        for(let i = 0; i < this._bullets.length; i++){
-            this._bullets[i].update();
-        }
-
-        this._drawX = this._x + this.map.START_X;
-        this._drawY = this._y + this.map.START_Y;
-    }
+    /**
+     * Controls if this player hits anyone
+     *
+     * @param players - other players on map that can be hit
+     */
     checkAttack(players){
         for(let i = 0; i < players.length; i++){
             for(let j = 0; j < this._bullets.length; j++){
@@ -86,6 +109,9 @@ class Player {
         }
     }
 
+    /**
+     * Set actions if player is hit
+     */
     hit(){
         this._deaths += 1;
         this.map.freePosition(this._mapX, this._mapY);
@@ -94,6 +120,75 @@ class Player {
         this._RESPAWN_SOUND.play();
     }
 
+    /**
+     * Player makes step in given direction
+     *
+     * @param stepX - step on x axis
+     * @param stepY - step on y axis
+     */
+    step(stepX, stepY) {
+        if (this._prevDirection === this._direction){
+            let canMove = this.map.canMove(this._mapX + stepX, this._mapY + stepY);
+
+            if(canMove){
+                this.map.freePosition(this._mapX, this._mapY);
+                this._mapX += stepX;
+                this._mapY += stepY;
+                this.map.blockPositionWithPlayer(this._mapX, this._mapY);
+            }
+        }
+        else {
+            this._prevDirection = this._direction;
+        }
+    }
+
+    /**
+     * Fire if it is possible
+     */
+    fire(){
+        //if he had enough bullets and it is enough time from last shot
+        if(this._bulletsNumber > 0 && this._canFire) {
+
+            this._SHOOT_SOUND.load();
+            this._SHOOT_SOUND.play();
+            this._canFire = false;
+            let b = new Bullet(this._direction, this._id, this.map);
+            b.setPosition(this._mapX, this._mapY);
+            this._bullets.push(b);
+            setTimeout(()=> { this._canFire = true; }, this._bulletTime);
+            this._bulletsNumber--;
+        }
+        if(this._bulletsNumber === 0 && !this._bulletsAdd){
+            this._bulletsAdd = true;
+            setTimeout(()=> {
+                this._bulletsAdd = false;
+                this._bulletsNumber = 5;
+            }, this._reloadTime);
+        }
+    }
+
+    /**
+     * Updates player's and it's bullets position
+     * should be called every tick
+     */
+    update(){
+        this._x = this._mapX * this.map.FIELD_SIZE + 5;
+        this._y = this._mapY * this.map.FIELD_SIZE + 5;
+
+        for(let i = 0; i < this._bullets.length; i++){
+            this._bullets[i].update();
+        }
+
+        this._drawX = this._x + this.map.START_X;
+        this._drawY = this._y + this.map.START_Y;
+    }
+
+    /**
+     * Draws player on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
     draw(ctx){
         for(let i = 0; i < this._bullets.length; i++){
             if (this._bullets[i].delete){
@@ -103,10 +198,12 @@ class Player {
                 this._bullets[i].draw(ctx);
             }
         }
-        this.drawPlayer(ctx, this._drawX, this._drawY, this._direction);
+        this._drawPlayer(ctx, this._drawX, this._drawY, this._direction);
     }
 
-    drawPlayer(ctx, x, y, direction){
+
+     //Draws player on given position with given direction on canvas, should be called every tick
+    _drawPlayer(ctx, x, y, direction){
         //draw body
         ctx.fillStyle = this.PLAYER_COLOR;
         ctx.fillRect(x, y, this.SIZE, this.SIZE);
@@ -133,55 +230,5 @@ class Player {
         }
     }
 
-    set direction(key){
-        this._prevDirection = this._direction;
-        this._direction = key;
-    }
-    get direction(){
-        return this._direction;
-    }
 
-    get deaths(){
-        return this._deaths;
-    }
-    get kills(){
-        return this._kills;
-    }
-
-    step(stepX, stepY) {
-        if (this._prevDirection === this._direction){
-            let canMove = this.map.canMove(this._mapX + stepX, this._mapY + stepY);
-
-            if(canMove){
-                this.map.freePosition(this._mapX, this._mapY);
-                this._mapX += stepX;
-                this._mapY += stepY;
-                this.map.blockPositionWithPlayer(this._mapX, this._mapY);
-            }
-        }
-        else {
-            this._prevDirection = this._direction;
-        }
-    }
-    fire(){
-        //if he had enough bullets and it is enough time from last shot
-        if(this._bulletsNumber > 0 && this._canFire) {
-
-            this._SHOOT_SOUND.load();
-            this._SHOOT_SOUND.play();
-            this._canFire = false;
-            let b = new Bullet(this._direction, this._id, this.map);
-            b.setPosition(this._mapX, this._mapY);
-            this._bullets.push(b);
-            setTimeout(()=> { this._canFire = true; }, this._bulletTime);
-            this._bulletsNumber--;
-        }
-        if(this._bulletsNumber === 0 && !this._bulletsAdd){
-            this._bulletsAdd = true;
-            setTimeout(()=> {
-                this._bulletsAdd = false;
-                this._bulletsNumber = 5;
-            }, this._reloadTime);
-        }
-    }
 }

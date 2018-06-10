@@ -1,5 +1,8 @@
-//for namespace
 class Keys{
+    /**
+     * Class for saving pressed key
+     * @param keys = field with control keys
+     */
     constructor(keys){
         this.LEFT = keys[0];
         this.RIGHT = keys[1];
@@ -12,9 +15,11 @@ class Keys{
 
         this._pressed = null;
     }
+
     set pressed(pressed){
         this._pressed = pressed;
     }
+
     get pressed(){
         return this._pressed;
     }

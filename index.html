@@ -5,7 +5,7 @@
     <title>Čtveránci</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <script src="game/gameObjects/map.js"></script>
+    <script src="game/gameObjects/gameMap.js"></script>
     <script src="game/gameObjects/player.js"></script>
     <script src="game/gameObjects/playerAI.js"></script>
     <script src="game/gameObjects/bullet.js"></script>
@@ -61,18 +61,22 @@
 
     <article>
         <h3>Inspirace</h3>
-        <video controls poster="pictures/bulanek.png">
-            <source src="videos/Bulanci trailer.mp4"
-                    type="video/mp4"
-            />
-            <img src="pictures/bulanek.png">
-        </video>
+        <div id="videoDiv">
+            <video controls poster="pictures/bulanek.png">
+                <source src="videos/Bulanci trailer.mp4"
+                        type="video/mp4"
+                />
+                <img src="pictures/bulanek.png">
+            </video>
+        </div>
     </article>
 
 
     <article>
         <h3>Ovládání</h3>
-        popis ovládání
+        <p>Menu na začátku i po skončení hry se ovládá pomocí šipek (nahoru a dolu), pomocí Enter se potvrdí vybraná položka (červeně).</p>
+        <p>Hra jednoho hráče - pohyb se ovládá pomocí šipek (krok se spouští puštěním šipky), střellba pomocí mezerníku.</p>
+        <p>Hra dvou hráčů - pohyb levého hráče je pomocí W S A D, střelba pomocí Z(qwerty)/Y(qwertz), pohyb pravého hráče pomocí I K J L, střelba pomocí M.</p>
     </article>
 
     <article>
@@ -160,18 +164,6 @@
 
     <br />
     <svg id="svgMap" viewBox="0 0 20 12">
-        <!--//#2c8d3d
-        <defs>
-            <pattern id="pattern" width="0.1" height="0.1667">
-                <rect x="0" y="0" width="1" height="1"></rect>
-                <rect x="1" y="1" height="1" width="1"></rect>
-                <rect x="0" y="1" height="1" width="1"></rect>
-                <rect x="1" y="0" height="1" width="1"></rect>
-
-            </pattern>
-        </defs>
-        <rect fill="url(#pattern)" x="0" y="0" width="100%" height="100%"></rect>
--->
     </svg>
     <form>
         <label for="mapName">Jméno souboru k uložení:</label>
@@ -187,13 +179,15 @@
 </footer>
 
 <script>
-    //push first site
+    //push first site to history
     history.pushState("#logoContent", "#logoContent");
 
-    //save menu items
+
+    //get menu items
     let radios = document.getElementsByName("radioButton");
 
-    //content load due to menu
+
+    //content load due to selected menu item
     for(let i = 0; i < radios.length; i++) {
         radios[i].onclick = () => {
             //prevent from inserting same state
@@ -206,19 +200,15 @@
             setState(state);
         }
     }
+
+
+    //history control
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
-        if(event.state === "#logoContent"){
-            let radiosToUncheck = document.getElementsByName("radioButton");
-            for(let i = 0; i < radios.length; i++) {
-                radiosToUncheck[i].checked = false;
-            }
-            return;
-        }
-        let menuId = event.state.replace("Content", "");
-        const currentMenuOption = document.querySelector(menuId);
-        currentMenuOption.checked = true;
+        setMenu(event.state);
+
     });
+
 
     //Drag and drop for inserting map
     let dragAndDrop = document.getElementById("mapInsert");
@@ -261,128 +251,21 @@
         }
     });
 
-    let svg = document.querySelector("#svgMap");
-    const ROWS = 12;
-    const COLUMNS = 20;
+
+    //map creator set created map
     let createdMap = [];
+    createSvg(createdMap);
 
-    //create default map
-    for (let i = 0; i < ROWS; i++) {
-        let line = [];
-        for (let j = 0; j < COLUMNS; j++) {
-            line.push(-2);
 
-        }
-        createdMap.push(line);
-    }
-
-    //create svgMap
-    const svgNS = "http://www.w3.org/2000/svg";
-
-    for (let i = 0; i < ROWS; i++) {
-        for (let j = 0; j < COLUMNS; j++) {
-        //<rect x="0" y="0" width="1" height="1"></rect>
-            let rect = document.createElementNS(svgNS, 'rect');
-            rect.setAttributeNS('', 'x', '' + j);
-            rect.setAttributeNS('', 'y', '' + i);
-            rect.setAttributeNS('', 'height', '1');
-            rect.setAttributeNS('', 'width', '1');
-
-            let color = "";
-            if (i % 2 === 0) {
-                if (j % 2 === 0) color = "#2a7f35";
-                else color = "#2c8d3d";
-            } else {
-                if (j % 2 === 0) color = "#2c8d3d";
-                else color = "#2a7f35";
-            }
-            rect.setAttributeNS('', 'fill', color);
-
-            if (i !== ROWS - 1 && j !== COLUMNS -1) {
-                rect.addEventListener("click", () => {
-
-                    let line = parseInt(rect.getAttribute("y"));
-                    let col = parseInt(rect.getAttribute("x"));
-
-                    //already tree there
-                    if(createdMap[line][col] !== -2 ||
-                        createdMap[line + 1][col] !== -2 ||
-                        createdMap[line][col + 1] !== -2 ||
-                        createdMap[line + 1][col + 1] !== -2
-                    ) return;
-
-                    let treeNumber = 0;
-                    let treesRadioButtons = document.getElementsByName("treeOption");
-                    for(let i = 0; i < 9; i++){
-                        if (treesRadioButtons[i].checked) treeNumber = parseInt(treesRadioButtons[i].value);
-                    }
-
-                    createdMap[line][col] = treeNumber;
-                    createdMap[line + 1][col] = treeNumber;
-                    createdMap[line][col + 1] = treeNumber;
-                    createdMap[line + 1][col + 1] = treeNumber;
-
-                    let g = document.createElementNS(svgNS, 'g');
-
-                    let circle = document.createElementNS(svgNS, 'circle');
-                    circle.setAttributeNS('', 'cx', (col+1) + '');
-                    circle.setAttributeNS('', 'cy', (line+1) + '');
-                    circle.setAttributeNS('', 'r', '1');
-                    circle.setAttributeNS('', 'fill', '#8d0002');
-
-                    let text = document.createElementNS(svgNS, 'text');
-                    text.setAttributeNS('', 'x', (col+1) + '');
-                    text.setAttributeNS('', 'y', (line+1.15) + '');
-                    text.setAttributeNS('', 'font-family', 'Verdana');
-                    text.setAttributeNS('', 'font-size', '0.5');
-                    text.setAttributeNS('', 'text-anchor', 'middle');
-                    text.setAttributeNS('', 'fill', '#FFFFFF');
-                    text.innerHTML = treeNumber;
-
-                    g.addEventListener("click", () =>{
-                        let l = parseInt(circle.getAttribute("cy")) - 1;
-                        let c = parseInt(circle.getAttribute("cx")) - 1;
-                        createdMap[l][c] = -2;
-                        createdMap[l + 1][c] = -2;
-                        createdMap[l][c + 1] = -2;
-                        createdMap[l + 1][c + 1] = -2;
-                        svg.removeChild(g);
-                        console.log(createdMap);
-                    });
-
-                    g.appendChild(circle);
-                    g.appendChild(text);
-
-                    svg.appendChild(g)
-
-                });
-            }
-            svg.appendChild(rect);
-        }
-    }
-
+    //set click event on save map
     document.querySelector("#saveMap").addEventListener("click", () => {
         let mapField = JSON.stringify(createdMap);
         let mapName = document.querySelector("#mapName").value + ".map";
         if(mapName.length === 0){
-            mapName = "map";
+            mapName = "map.map";
         }
         download(mapName, mapField);
     });
-
-    function download(filename, text) {
-        let element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
-    }
-
 
 
 </script>

@@ -1,4 +1,10 @@
 class End {
+    /**
+     * Creates state on end of game
+     *
+     * @param gameStateManager - manager that controls game states
+     * @param players - field with players that played the game
+     */
     constructor(gameStateManager, players) {
         this._gameStateManager = gameStateManager;
         this.KEYS = gameStateManager.KEYS;
@@ -7,15 +13,92 @@ class End {
         this._currentOption = 0;
         this._drawInit = false;
 
+        //save score for single player
         if(this._players.length !== 2){
             this._score();
         }
     }
 
+    //saves score to local storage
+    _score(){
+        //current score
+        let score = this._players[0].kills - this._players[0].deaths;
+
+        //results in local storage for given time
+        let result = getResultFor(this._gameStateManager.TIME);
+
+        //update results
+        const insertField = [this._players[0].NAME, score];
+        if (result.length > 0) {
+            for (let i = result.length - 1; i >= -1; i--){
+                if(i === -1){
+                    result[0] = insertField;
+                    break;
+                }
+                if(i === 9){
+                    if(score <= result[i][1]) break;
+                    else continue;
+                }
+
+
+                if(score <= result[i][1]) {
+                    result[i + 1] = insertField;
+                    break;
+                } else {
+                    result[i + 1] = result[i];
+                }
+            }
+
+        } else {
+            result = [insertField];
+        }
+
+        //save updated results
+        saveField(this._gameStateManager.TIME, result);
+    }
+
+    /**
+     * Updates end state - handles input
+     * should be called every tick
+     */
     update(){
         this._handleInput();
     }
+    //reaction on input
+    _handleInput() {
+        switch (this.KEYS.pressed) {
+            case this.KEYS.UP:
+                this._currentOption -= 1;
+                if (this._currentOption < 0) this._currentOption = this._options.length - 1;
+                break;
+            case this.KEYS.DOWN:
+                this._currentOption += 1;
+                if (this._currentOption > this._options.length - 1) this._currentOption = 0;
+                break;
+            case this.KEYS.ENTER:
+                this._select();
+                break;
+        }
+        this.KEYS.pressed = null;
+    }
 
+    //change state due to selection
+    _select(){
+        if(this._currentOption === 0){
+            this._gameStateManager.currentState = "GAME";
+        }
+        if(this._currentOption === 1){
+            this._gameStateManager.currentState = "MENU";
+        }
+    }
+
+
+    /**
+     * Draws end state on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
     draw(ctx){
         if(!this._drawInit) {
             ctx.fillStyle = "#002727";
@@ -41,7 +124,7 @@ class End {
 
             //draw players
             for(let i = 0; i < this._players.length; i++){
-                this._players[i].drawPlayer(ctx, step * (i + 1) - this._players[i].SIZE/2, height, DOWN);
+                this._players[i]._drawPlayer(ctx, step * (i + 1) - this._players[i].SIZE/2, height, DOWN);
 
                 ctx.fillStyle = "#9eddd6";
                 ctx.fillText("Zabití: " + this._players[i].kills, step * (i + 1), height + 130);
@@ -71,65 +154,4 @@ class End {
             }
         }
     }
-
-    _handleInput() {
-        switch (this.KEYS.pressed) {
-            case this.KEYS.UP:
-                this._currentOption -= 1;
-                if (this._currentOption < 0) this._currentOption = this._options.length - 1;
-                break;
-            case this.KEYS.DOWN:
-                this._currentOption += 1;
-                if (this._currentOption > this._options.length - 1) this._currentOption = 0;
-                break;
-            case this.KEYS.ENTER:
-                this._select();
-                break;
-        }
-        this.KEYS.pressed = null;
-    }
-
-    _select(){
-        if(this._currentOption === 0){
-            this._gameStateManager.currentState = "GAME";
-        }
-        if(this._currentOption === 1){
-            this._gameStateManager.currentState = "MENU";
-        }
-    }
-
-    _score(){
-        let score = this._players[0].kills - this._players[0].deaths;
-
-        let result = getResultFor(this._gameStateManager.TIME);
-
-
-        const insertField = [this._players[0].NAME, score];
-        if (result.length > 0) {
-            for (let i = result.length - 1; i >= -1; i--){
-                if(i === -1){
-                    result[0] = insertField;
-                    break;
-                }
-                if(i === 9){
-                    if(score <= result[i][1]) break;
-                    else continue;
-                }
-
-
-                if(score <= result[i][1]) {
-                    result[i + 1] = insertField;
-                    break;
-                } else {
-                    result[i + 1] = result[i];
-                }
-            }
-
-        } else {
-            result = [insertField];
-        }
-        saveField(this._gameStateManager.TIME, result);
-    }
-
-
 }

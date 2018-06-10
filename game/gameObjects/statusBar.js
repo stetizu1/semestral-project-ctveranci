@@ -2,7 +2,15 @@ const STATUS_WIDTH = 180;
 const STATUS_HEIGHT_PLAYER = 840;
 const STATUS_HEIGHT_AI = 280;
 
-class StatusBar{
+class StatusBar {
+    /**
+     * Creates status bar for given player
+     *
+     * @param START_X - start for x-axis on canvas
+     * @param START_Y - start for y-axis on canvas
+     * @param STATUS_HEIGHT - height on canvas
+     * @param player - player that status bar is for
+     */
     constructor(START_X, START_Y, STATUS_HEIGHT, player) {
         this.START_X = START_X;
         this.START_Y = START_Y;
@@ -14,12 +22,22 @@ class StatusBar{
         this._bullets = this._player._bulletsNumber;
     }
 
+    /**
+     * Updates status bar
+     * should be called every tick
+     */
     update(){
         this._deaths = this._player.deaths;
         this._kills = this._player.kills;
         this._bullets = this._player._bulletsNumber;
     }
 
+    /**
+     * Draws status bar on canvas
+     * should be called every tick
+     *
+     * @param ctx - context used on canvas
+     */
     draw(ctx){
         //draw frame
         ctx.fillStyle = "#447573";
@@ -30,7 +48,7 @@ class StatusBar{
         //draw player
         const playerX = this.START_X + STATUS_WIDTH / 2 - this._player.SIZE / 2;
         const playerY = this.START_Y + 30;
-        this._player.drawPlayer(ctx, playerX, playerY, DOWN);
+        this._player._drawPlayer(ctx, playerX, playerY, DOWN);
 
         //set font
         ctx.fillStyle = "#ADF5FF";
