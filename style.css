@@ -393,7 +393,7 @@ table * tr > * {
     display: none;
 }
 
-#mapEditorContent label {
+#mapEditorContent .treeLabel {
     display: inline-block;
     width: 100px;
     height: 100px;
@@ -402,35 +402,35 @@ table * tr > * {
     cursor: pointer;
 }
 
-#mapEditorContent input[type="radio"]:checked + label{
+#mapEditorContent input[type="radio"]:checked + .treeLabel{
     background-color: #b8f1d2;
 }
 
-#mapEditorContent > label:nth-child(5){
+#mapEditorContent > .treeLabel:nth-child(5){
     background-position-x: -100px;
 }
-#mapEditorContent > label:nth-child(7) {
+#mapEditorContent > .treeLabel:nth-child(7) {
     background-position-x: -200px;
 }
-#mapEditorContent > label:nth-child(9) {
+#mapEditorContent > .treeLabel:nth-child(9) {
     background-position-y: -100px;
 }
-#mapEditorContent > label:nth-child(11){
+#mapEditorContent > .treeLabel:nth-child(11){
     background-position-y: -100px;
     background-position-x: -100px;
 }
-#mapEditorContent > label:nth-child(13) {
+#mapEditorContent > .treeLabel:nth-child(13) {
     background-position-y: -100px;
     background-position-x: -200px;
 }
-#mapEditorContent > label:nth-child(15) {
+#mapEditorContent > .treeLabel:nth-child(15) {
     background-position-y: -200px;
 }
-#mapEditorContent > label:nth-child(17){
+#mapEditorContent > .treeLabel:nth-child(17){
     background-position-y: -200px;
     background-position-x: -100px;
 }
-#mapEditorContent > label:nth-child(19) {
+#mapEditorContent > .treeLabel:nth-child(19) {
     background-position-y: -200px;
     background-position-x: -200px;
 }
