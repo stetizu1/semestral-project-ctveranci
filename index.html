@@ -158,7 +158,19 @@
     <input type="radio" name="treeOption" id="tree8" value="8">
     <label for="tree8"></label>
 
-    <svg>
+    <br />
+    <svg id="svgMap" viewBox="0 0 20 12">
+        <!--//#2c8d3d-->
+        <defs>
+            <pattern id="pattern" width="0.1" height="0.1667">
+                <rect x="0" y="0" width="1" height="1"></rect>
+                <rect x="1" y="1" height="1" width="1"></rect>
+                <rect x="0" y="1" height="1" width="1"></rect>
+                <rect x="1" y="0" height="1" width="1"></rect>
+
+            </pattern>
+        </defs>
+        <rect fill="url(#pattern)" x="0" y="0" width="100%" height="100%"></rect>
 
     </svg>
 
@@ -170,9 +182,38 @@
 </footer>
 
 <script>
-
     //push first site
     history.pushState("#logoContent", "#logoContent");
+
+    //save menu items
+    let radios = document.getElementsByName("radioButton");
+
+    //content load due to menu
+    for(let i = 0; i < radios.length; i++) {
+        radios[i].onclick = () => {
+            //prevent from inserting same state
+            if(history.state !== radios[i].value) {
+                history.pushState(radios[i].value, radios[i].value);
+            }
+
+            //show selected section
+            let state = radios[i].value;
+            setState(state);
+        }
+    }
+    window.addEventListener("popstate", (event) =>{
+        setState(event.state);
+        if(event.state === "#logoContent"){
+            let radiosToUncheck = document.getElementsByName("radioButton");
+            for(let i = 0; i < radios.length; i++) {
+                radiosToUncheck[i].checked = false;
+            }
+            return;
+        }
+        let menuId = event.state.replace("Content", "");
+        const currentMenuOption = document.querySelector(menuId);
+        currentMenuOption.checked = true;
+    });
 
     //Drag and drop for inserting map
     let dragAndDrop = document.getElementById("mapInsert");
@@ -215,34 +256,27 @@
         }
     });
 
-    //menu content load
-    let radios = document.getElementsByName("radioButton");
+    let svg = document.querySelector("#svgMap");
+    const ROWS = 12;
+    const COLUMNS = 20;
+    let createdMap = [];
 
-    for(let i = 0; i < radios.length; i++) {
-        radios[i].onclick = () => {
-            //prevent from inserting same state
-            if(history.state !== radios[i].value) {
-                history.pushState(radios[i].value, radios[i].value);
-            }
-
-            //show selected section
-            let state = radios[i].value;
-            setState(state);
+    //create default map
+    for (let i = 0; i < ROWS; i++) {
+        let line = [];
+        for (let j = 0; j < COLUMNS; j++) {
+            line.push(-2);
         }
+        createdMap.push(line);
     }
-    window.addEventListener("popstate", (event) =>{
-        setState(event.state);
-        if(event.state === "#logoContent"){
-            let radiosToUncheck = document.getElementsByName("radioButton");
-            for(let i = 0; i < radios.length; i++) {
-                radiosToUncheck[i].checked = false;
-            }
-            return;
-        }
-        let menuId = event.state.replace("Content", "");
-        const currentMenuOption = document.querySelector(menuId);
-        currentMenuOption.checked = true;
+
+    svg.addEventListener("click", (event) => {
+        console.log(event.offsetX);
+        console.log(event.offsetY);
+        createdMap[event.offsetY][event.offsetX] = 0;
+        console.log(createdMap);
     });
+
 </script>
 
 </body>

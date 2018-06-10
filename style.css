@@ -435,4 +435,16 @@ table * tr > * {
     background-position-x: -200px;
 }
 
+#svgMap {
+    width: 50vw;
+    margin: 15px;
+}
+
+
+#svgMap defs pattern :nth-child(1), #svgMap defs pattern :nth-child(2){
+    fill: #2a7f35;
+}
+#svgMap defs pattern :nth-child(3), #svgMap defs pattern :nth-child(4){
+    fill: #2c8d3d;
+}
 
