@@ -84,5 +84,43 @@ const createTableFor = (time) => {
     table.appendChild(tbody);
 
     return table;
-
 };
+
+const setState = (state) => {
+    //leaderBoardSection reload
+    const leaderBoardSection = document.getElementById("leaderBoardContent");
+    leaderBoardSection.innerHTML = "<h2>Žebříček</h2>";
+
+    //show selected section
+    let targetSection = document.querySelector(state);
+    targetSection.style.display = "block";
+
+    //game content set
+    if(state === "#gameContent"){
+        let numPlayersField = document.getElementsByName("numPlayerOption");
+        if(numPlayersField[1].checked) numPlayers = 2;
+
+        let name1Field = document.getElementById("playerOneName");
+        if (name1Field.value.length > 0) player1Name = name1Field.value;
+
+        let mapOption = document.getElementsByName("map");
+        if(mapOption[0].checked)map = null;
+
+        let timeOption = document.getElementById("gameTime");
+        let time = timeOption.options[timeOption.selectedIndex].value;
+
+        if(numPlayers === 1) {
+            gameWindow = new GameWindow(document.getElementById("gameContent"), time, 1, map, player1Name);
+        } else {
+            let name2Field = document.getElementById("playerTwoName");
+            if (name2Field.value.length > 0) player2Name = name2Field.value;
+
+            gameWindow = new GameWindow(document.getElementById("gameContent"), time, 2, map, player1Name, player2Name);
+        }
+        gameWindow.run();
+    }
+
+    else if (state === "#leaderBoardContent"){
+        createTables(leaderBoardSection);
+    }
+}
