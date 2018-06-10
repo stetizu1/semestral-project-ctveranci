@@ -304,6 +304,7 @@ section form fieldset input[type="text"]{
     text-align: center;
 
     opacity: 0.8;
+    border: 0 dashed red;
 
     /*Zdroj:
     by Paul Salentiny
