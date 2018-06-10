@@ -146,12 +146,6 @@
 
     history.pushState("#logo", "#logo");
 
-    //default values
-    let numPlayers = 1;
-    let map = null;
-    let player1Name = "Player 1";
-    let player2Name = "Player 2";
-
 
     //Drag and drop for inserting map
     let dragAndDrop = document.getElementById("mapInsert");
@@ -181,38 +175,12 @@
         }
     });
 
-
-
-
-
-
     //menu content load
     let radios = document.getElementsByName("radioButton");
-    let gameWindow = null;
 
     for(let i = 0; i < radios.length; i++) {
         radios[i].onclick = () => {
-            //video in intro pause
-            let video = document.querySelector("#introductionContent article video");
-            video.pause();
-
-            let allSections = document.querySelectorAll("section");
-
-            //hide other sections
-            for(let i = 0; i < allSections.length; i++) {
-                allSections[i].style.display = "none";
-            }
-
-            //gameContent reload
-            let gameContent = document.getElementById("gameContent");
-            gameContent.innerHTML = "<h2>Hra</h2>";
-            if(gameWindow !== null){
-                gameWindow.destroyWindow();
-                gameWindow = null;
-            }
-
             history.pushState(radios[i].value, radios[i].value);
-
 
             //show selected section
             let state = radios[i].value;

@@ -87,6 +87,35 @@ const createTableFor = (time) => {
 };
 
 const setState = (state) => {
+
+    //default values
+    let numPlayers = 1;
+    let map = null;
+    let player1Name = "Player 1";
+    let player2Name = "Player 2";
+    let gameWindow = null;
+
+
+
+    //video in intro pause
+    let video = document.querySelector("#introductionContent article video");
+    video.pause();
+
+    let allSections = document.querySelectorAll("section");
+
+    //hide other sections
+    for(let i = 0; i < allSections.length; i++) {
+        allSections[i].style.display = "none";
+    }
+
+    //gameContent reload
+    let gameContent = document.getElementById("gameContent");
+    gameContent.innerHTML = "<h2>Hra</h2>";
+    if(gameWindow !== null){
+        gameWindow.destroyWindow();
+        gameWindow = null;
+    }
+
     //leaderBoardSection reload
     const leaderBoardSection = document.getElementById("leaderBoardContent");
     leaderBoardSection.innerHTML = "<h2>Žebříček</h2>";
@@ -123,4 +152,4 @@ const setState = (state) => {
     else if (state === "#leaderBoardContent"){
         createTables(leaderBoardSection);
     }
-}
+};
