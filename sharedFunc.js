@@ -86,16 +86,14 @@ const createTableFor = (time) => {
     return table;
 };
 
+//default values
+let numPlayers = 1;
+let map = null;
+let player1Name = "Player 1";
+let player2Name = "Player 2";
+let gameWindow = null;
+
 const setState = (state) => {
-
-    //default values
-    let numPlayers = 1;
-    let map = null;
-    let player1Name = "Player 1";
-    let player2Name = "Player 2";
-    let gameWindow = null;
-
-
 
     //video in intro pause
     let video = document.querySelector("#introductionContent article video");
