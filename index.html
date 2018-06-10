@@ -213,7 +213,7 @@
             const leaderBoardSection = document.getElementById("leaderBoardContent");
             leaderBoardSection.innerHTML = "<h2>Žebříček</h2>";
 
-            history.pushState(null, radios[i].value, `${radios[i].value}`);
+            history.pushState(radios[i].value, radios[i].value);
 
 
             //show selected section
