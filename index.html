@@ -144,8 +144,8 @@
 
 <script>
 
+    //push first site
     history.pushState("#logo", "#logo");
-
 
     //Drag and drop for inserting map
     let dragAndDrop = document.getElementById("mapInsert");
@@ -189,6 +189,8 @@
     }
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
+        let sth = event.state - "Content";
+        console.log(sth);
     });
 </script>
 
