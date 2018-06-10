@@ -189,7 +189,7 @@
     }
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
-        let sth = event.state - "Content";
+        let sth = event.state.replace("Content", "");
         console.log(sth);
     });
 </script>
