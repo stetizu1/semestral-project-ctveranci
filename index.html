@@ -189,8 +189,9 @@
     }
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
-        let sth = event.state.replace("Content", "");
-        console.log(sth);
+        let menuId = event.state.replace("Content", "");
+        const currentMenuOption = document.getElementById(menuId);
+        currentMenuOption.checked = true;
     });
 </script>
 

@@ -82,7 +82,8 @@ nav .navigation .menu {
 nav .navigation .menu:hover{
     background-color: rgba(255, 255, 255, 0.1);
 }
-#introduction:checked ~ [for="introduction"], #settings:checked ~ [for="settings"], #game:checked ~ [for="game"] {
+#introduction:checked ~ [for="introduction"], #settings:checked ~ [for="settings"], #game:checked ~ [for="game"],
+#leaderBoard:checked ~ [for="leaderBoard"], #mapEditor:checked ~[for="mapEditor"]{
     background-color: #1e1e1e;
 }
 
