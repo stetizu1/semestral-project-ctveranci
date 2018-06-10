@@ -190,7 +190,13 @@
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
         let menuId = event.state.replace("Content", "");
-        const currentMenuOption = document.getElementById(menuId);
+        if(menuId === "#logo"){
+            let radios = document.getElementsByName("radioButton");
+            for(let i = 0; i < radios.length; i++) {
+                currentMenuOption.checked = false;
+            }
+        }
+        const currentMenuOption = document.querySelector(menuId);
         currentMenuOption.checked = true;
     });
 </script>
