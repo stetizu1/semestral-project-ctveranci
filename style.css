@@ -303,6 +303,8 @@ section form fieldset input[type="text"]{
     transition: all 2s;
     text-align: center;
 
+    opacity: 0.8;
+
     /*Zdroj:
     by Paul Salentiny
     http://lea.verou.me/css3patterns/#pyramid*/
