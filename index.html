@@ -213,6 +213,9 @@
             const leaderBoardSection = document.getElementById("leaderBoardContent");
             leaderBoardSection.innerHTML = "<h2>Žebříček</h2>";
 
+            history.pushState(null, radios[i].value, `${radios[i].value}`);
+
+
             //show selected section
             let targetSection = document.querySelector(radios[i].value);
             targetSection.style.display = "block";
@@ -245,8 +248,11 @@
             if(radios[i].value === "#leaderBoardContent"){
                 createTables(leaderBoardSection);
             }
-        };
+        }
     }
+    window.addEventListener("popstate", (event) =>{
+        console.log(event.state);
+    });
 </script>
 
 </body>
