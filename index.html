@@ -153,6 +153,15 @@
     dragAndDrop.addEventListener("dragover", (event) => {
         event.preventDefault();
     });
+
+    dragAndDrop.addEventListener("dragenter", () => {
+        dragAndDrop.style.opacity = 0.2;
+    });
+
+    dragAndDrop.addEventListener("dragleave", () => {
+        dragAndDrop.style.opacity = 1;
+    });
+
     dragAndDrop.addEventListener("drop", (event) => {
         event.preventDefault();
         const FILES = Array.from(event.dataTransfer.files);

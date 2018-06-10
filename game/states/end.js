@@ -128,8 +128,6 @@ class End {
         } else {
             result = [insertField];
         }
-
-        console.log(result);
         saveField(this._gameStateManager.TIME, result);
     }
 
