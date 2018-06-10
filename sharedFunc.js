@@ -131,7 +131,7 @@ const setState = (state) => {
         if (name1Field.value.length > 0) player1Name = name1Field.value;
 
         let mapOption = document.getElementsByName("map");
-        if(mapOption[0].checked)map = null;
+        if(mapOption[0].checked) map = null;
 
         let timeOption = document.getElementById("gameTime");
         let time = timeOption.options[timeOption.selectedIndex].value;

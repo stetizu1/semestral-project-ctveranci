@@ -440,11 +440,8 @@ table * tr > * {
     margin: 15px;
 }
 
+#svgMap {
+    cursor: pointer;
+}
 
-#svgMap defs pattern :nth-child(1), #svgMap defs pattern :nth-child(2){
-    fill: #2a7f35;
-}
-#svgMap defs pattern :nth-child(3), #svgMap defs pattern :nth-child(4){
-    fill: #2c8d3d;
-}
 
