@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8"/>
+    <title>Čtveránci</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="game/gameObjects/map.js"></script>
+    <script src="game/gameObjects/player.js"></script>
+    <script src="game/gameObjects/playerAI.js"></script>
+    <script src="game/gameObjects/bullet.js"></script>
+    <script src="game/gameObjects/statusBar.js"></script>
+    <script src="game/gameObjects/timer.js"></script>
+
+    <script src="game/states/gameStateManager.js"></script>
+    <script src="game/states/menu.js"></script>
+    <script src="game/states/game.js"></script>
+    <script src="game/states/end.js"></script>
+
+    <script src="game/gameWindow.js"></script>
+    <script src="game/keys.js"></script>
+
+    <script src="sharedFunc.js"></script>
+
+</head>
+
+<body>
+
+<header>
+    <h1>Čtveránci</h1>
+</header>
+
+<nav>
+    <div class="navigation">
+        <input type=radio name="radioButton" id="introduction" value="#introductionContent"/>
+        <input type=radio name="radioButton" id="settings" value="#settingsContent"/>
+        <input type=radio name="radioButton" id="game" value="#gameContent"/>
+        <input type="radio" name="radioButton" id="leaderBoard" value="#leaderBoardContent">
+        <input type="radio" name="radioButton" id="mapEditor" value="#mapEditorContent">
+
+        <label class="menu" for="introduction">Úvod</label>
+        <label class="menu" for="settings">Nastavení</label>
+        <label class="menu" for="game">Hra</label>
+        <label class="menu" for="leaderBoard">Žebříček</label>
+        <label class="menu" for="mapEditor">Editor map</label>
+    </div>
+</nav>
+
+<section id="logo">
+    <h2>Čtveránci</h2>
+    <div id="redSquare"></div>
+    <div id="blueSquare"></div>
+    <div id="greenSquare"></div>
+    <div id="yellowSquare"></div>
+</section>
+
+<section id="introductionContent">
+    <h2>Úvod</h2>
+
+    <article>
+        <h3>Inspirace</h3>
+        <video controls poster="pictures/bulanek.png">
+            <source src="videos/Bulanci trailer.mp4"
+                    type="video/mp4"
+            />
+            <img src="pictures/bulanek.png">
+        </video>
+    </article>
+
+
+    <article>
+        <h3>Ovládání</h3>
+        popis ovládání
+    </article>
+
+    <article>
+        <h3>Dokumentace</h3>
+        Dokumentace projektu <a href="documentation.html">zde</a>.
+    </article>
+
+
+</section>
+
+<section id="settingsContent">
+    <h2>Nastavení</h2>
+    <form>
+        <fieldset>
+            <legend> Hráči </legend>
+            <input type="radio" name="numPlayerOption" id="onePlayer" value="1" checked>
+            <label for="onePlayer"><img src="pictures/person.png" alt="one player game"></label>
+            <input type="radio" name="numPlayerOption" id="twoPlayers" value="2">
+            <label for="twoPlayers"><img src="pictures/people.png" alt="two players game"></label>
+
+            <br />
+
+            <label for="playerOneName" class="blockLabel">Hráč 1:</label>
+            <input type="text" id="playerOneName" placeholder="Player 1" maxlength="10">
+            <label for="playerTwoName" class="blockLabel" id="playerTwoNameLabel">Hráč 2:</label>
+            <input type="text" id="playerTwoName" placeholder="Player 2" maxlength="10">
+
+        </fieldset>
+
+        <fieldset>
+            <legend> Mapa </legend>
+            <input type="radio" name="map" id="randomMap" value="true" checked>
+            <label for="randomMap"><img src="pictures/dice.svg" alt="random generated map"></label>
+            <input type="radio" name="map" id="insertedMap" value="false">
+            <label for="insertedMap"><img src="pictures/insert.png" alt="inserted map"></label>
+
+            <div id="mapInsert">Přetáhněte sem soubor s mapou</div>
+        </fieldset>
+
+        <fieldset>
+            <legend> Čas </legend>
+            <label class="blockLabel" for="gameTime">Výběr času hry:</label>
+            <div class="styledSelect">
+                <select name="time" id="gameTime">
+                    <option value="60">60 vteřin</option>
+                    <option value="90" selected>90 vteřin</option>
+                    <option value="120">120 vteřin</option>
+                    <option value="180">180 vteřin</option>
+                </select>
+            </div>
+        </fieldset>
+    </form>
+
+
+</section>
+<section id="gameContent">
+    <h2>Hra</h2>
+</section>
+
+<section id="leaderBoardContent">
+    <h2>Žebříček</h2>
+</section>
+
+<section id="mapEditorContent">
+    <h2>Editor map</h2>
+</section>
+
+<footer>
+    Zuzana Štětinová, FEL ČVUT 2018
+</footer>
+
+<script>
+
+    //default values
+    let numPlayers = 1;
+    let map = null;
+    let player1Name = "Player 1";
+    let player2Name = "Player 2";
+
+
+    //Drag and drop for inserting map
+    let dragAndDrop = document.getElementById("mapInsert");
+
+    dragAndDrop.addEventListener("dragover", (event) => {
+        event.preventDefault();
+    });
+    dragAndDrop.addEventListener("drop", (event) => {
+        event.preventDefault();
+        const FILES = Array.from(event.dataTransfer.files);
+        let file = FILES.length > 0 ? FILES[0] : null;
+        let fr = new FileReader();
+
+        fr.addEventListener("load", function(e) {
+            try {
+                map = JSON.parse(e.target.result);
+                dragAndDrop.innerHTML=file.name;
+            }
+            catch (e){
+                map = null;
+                alert(e);
+            }
+        });
+
+        if(file !== null){
+            fr.readAsText(file);
+        }
+    });
+
+
+
+
+
+
+    //menu content load
+    let radios = document.getElementsByName("radioButton");
+    let gameWindow = null;
+
+    for(let i = 0; i < radios.length; i++) {
+        radios[i].onclick = () => {
+            //video in intro pause
+            let video = document.querySelector("#introductionContent article video");
+            video.pause();
+
+            let allSections = document.querySelectorAll("section");
+
+            //hide other sections
+            for(let i = 0; i < allSections.length; i++) {
+                allSections[i].style.display = "none";
+            }
+
+            //gameContent reload
+            let gameContent = document.getElementById("gameContent");
+            gameContent.innerHTML = "<h2>Hra</h2>";
+            if(gameWindow !== null){
+                gameWindow.destroyWindow();
+                gameWindow = null;
+            }
+
+            //leaderBoardSection reload
+            const leaderBoardSection = document.getElementById("leaderBoardContent");
+            leaderBoardSection.innerHTML = "<h2>Žebříček</h2>";
+
+            //show selected section
+            let targetSection = document.querySelector(radios[i].value);
+            targetSection.style.display = "block";
+
+            //game content set
+            if(radios[i].value === "#gameContent"){
+                let numPlayersField = document.getElementsByName("numPlayerOption");
+                if(numPlayersField[1].checked) numPlayers = 2;
+
+                let name1Field = document.getElementById("playerOneName");
+                if (name1Field.value.length > 0) player1Name = name1Field.value;
+
+                let mapOption = document.getElementsByName("map");
+                if(mapOption[0].checked)map = null;
+
+                let timeOption = document.getElementById("gameTime");
+                let time = timeOption.options[timeOption.selectedIndex].value;
+
+                if(numPlayers === 1) {
+                    gameWindow = new GameWindow(document.getElementById("gameContent"), time, 1, map, player1Name);
+                } else {
+                    let name2Field = document.getElementById("playerTwoName");
+                    if (name2Field.value.length > 0) player2Name = name2Field.value;
+
+                    gameWindow = new GameWindow(document.getElementById("gameContent"), time, 2, map, player1Name, player2Name);
+                }
+                gameWindow.run();
+            }
+
+            if(radios[i].value === "#leaderBoardContent"){
+                createTables(leaderBoardSection);
+            }
+        };
+    }
+</script>
+
+</body>
+</html>

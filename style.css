@@ -1,0 +1,385 @@
+/*grid*/
+body{
+    padding: 0; margin: 0;
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-rows: 75px auto 50px;
+    grid-template-columns: 20% 80%;
+    grid-template-areas:
+            "head  nav"
+            "section section"
+            "foot foot ";
+    grid-gap: 5px 0;
+
+
+    background: linear-gradient(to right, #464546, #535253, #666566, #727172 15%, #727172 85%, #666566, #535253, #464546);
+}
+
+header {
+    grid-area: head;
+    background: #333 url("pictures/logo.png") no-repeat;
+    background-position-y: center;
+    background-position-x: 20px;
+    background-size: 50px 50px;
+    padding: 10px;
+
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    color: #bebebe;
+    text-shadow: 0 1px 0 white;
+    text-align: center;
+}
+
+nav {
+    grid-area: nav;
+    background-color: #333;
+
+    color: #e4e4e4;
+}
+
+section{
+    grid-area: section;
+    justify-self: center;
+    display: none;
+}
+
+footer {
+    grid-area: foot;
+    background-color: #333;
+    padding: 15px;
+
+    color: #e4e4e4;
+    text-align: center;
+}
+
+/*title*/
+header h1{
+    font-variant: small-caps;
+    margin: 5px;
+    text-shadow: -1px -1px 1px #000, 1px 1px 1px #ccc;
+}
+
+/*menu*/
+
+nav .navigation input[type="radio"]{
+    display: none;
+}
+
+nav .navigation{
+    background-color: #333;
+    float: right;
+}
+
+nav .navigation .menu {
+    cursor: pointer;
+    display: block;
+    float: left;
+    text-align: center;
+    padding: 28px 16px;
+    transition: 300ms;
+}
+
+nav .navigation .menu:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+#introduction:checked ~ [for="introduction"], #settings:checked ~ [for="settings"], #game:checked ~ [for="game"] {
+    background-color: #1e1e1e;
+}
+
+#logo{
+    display: block;
+    min-width: 500px;
+    background-color: rgba(215,249,223,0.1);
+
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: 40px;
+    color: #242424;
+    text-shadow: 0 1px 0 black;
+    text-align: center;
+}
+#logo h2 {
+    font-variant: small-caps;
+    margin: 5px;
+    text-shadow: -1px -1px 1px #ccc, 1px 1px 1px #000;
+}
+
+#logo div {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+/*logo style*/
+#redSquare {
+    background-color: red;
+    animation: shiftRightDown 3s linear infinite;
+}
+
+#blueSquare {
+    background-color: blue;
+    animation: shiftLeftDown 3s linear infinite;
+}
+#greenSquare {
+    background-color: green;
+    animation: shiftRightUp 3s linear infinite;
+
+}
+
+#yellowSquare {
+    background-color: yellow;
+    animation: shiftLeftUp 3s linear infinite;
+}
+
+
+@keyframes shiftRightDown {
+    0% {
+        transform: rotate(0deg);
+        left: 100px; top: 100px;
+    }
+    25% {
+        transform: rotate(45deg);
+        left: 200px; top: 200px;
+    }
+    50% {
+        transform: rotate(90deg);
+        left: 300px; top: 300px;
+    }
+    75% {
+        transform: rotate(135deg);
+        left: 200px; top: 200px;
+    }
+    100% {
+        transform: rotate(180deg);
+        left: 100px; top: 100px;
+    }
+}
+
+@keyframes shiftLeftDown {
+    0% {
+        transform: rotate(0deg);
+        left: 300px; top: 0;
+    }
+    25% {
+        transform: rotate(45deg);
+        left: 200px; top: 100px;
+    }
+    50% {
+        transform: rotate(90deg);
+        left: 100px; top: 200px;
+    }
+    75% {
+        transform: rotate(135deg);
+        left: 200px; top: 100px;
+    }
+    100% {
+        transform: rotate(180deg);
+        left: 300px; top: 0;
+    }
+}
+
+@keyframes shiftRightUp {
+    0% {
+        transform: rotate(0deg);
+        left: 100px; top: 100px;
+    }
+    25% {
+        transform: rotate(45deg);
+        left: 200px; top: 0;
+    }
+    50% {
+        transform: rotate(90deg);
+        left: 300px; top: -100px;
+    }
+    75% {
+        transform: rotate(135deg);
+        left: 200px; top: 0;
+    }
+    100% {
+        transform: rotate(180deg);
+        left: 100px; top: 100px;
+    }
+}
+
+@keyframes shiftLeftUp {
+    0%{
+        transform: rotate(0deg);
+        left: 300px; top: 0;
+    }
+    25% {
+        transform: rotate(45deg);
+        left: 200px; top: -100px;
+    }
+    50% {
+        transform: rotate(90deg);
+        left: 100px; top: -200px;
+    }
+    75% {
+        transform: rotate(135deg);
+        left: 200px; top: -100px;
+    }
+    100% {
+        transform: rotate(180deg);
+        left: 300px; top: 0;
+    }
+}
+
+/*page style*/
+section:not(#gameContent):not(#logo) {
+    padding: 15px;
+    min-width: 50%;
+    background-color: #051e1e;
+    color: #abf8bb;
+}
+
+/*introduction style*/
+#introductionContent {
+    text-align: center;
+    color: #caf8d6;
+}
+
+#introductionContent h2{
+    text-align: left;
+}
+
+#introductionContent article a{
+    color: #59f19a;
+}
+
+/*settings style*/
+#settingsContent form {
+    padding: 15px;
+    border: 1px solid #5bf89f;
+    background-color: #2f7e51;
+}
+
+#settingsContent form .blockLabel{
+    display: block;
+    padding: 5px 0 3px 0;
+}
+
+#settingsContent form fieldset input[type="radio"]{
+    display: none;
+}
+
+#settingsContent form fieldset input[type="radio"] + label > img {
+    cursor:pointer;
+    width: 40px;
+    padding: 5px;
+    transition: all 0.5s;
+}
+
+#settingsContent form fieldset input[type="radio"]:checked + label > img{
+    background-color: #399962;
+    border-radius: 5px;
+}
+
+#playerTwoName, #playerTwoNameLabel{
+    transition: all 0.5s;
+}
+
+#twoPlayers:checked ~ #playerTwoNameLabel{
+    font-size: inherit;
+}
+
+section form fieldset input[type="text"]{
+    height: 20px;
+    width: 50%;
+    color: #c5ffc9;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #051e1e;
+}
+
+#twoPlayers:not(:checked) ~ #playerTwoNameLabel, #twoPlayers:not(:checked) ~ #playerTwoName{
+    font-size: 0;
+    height:0;
+    background: none;
+    border: none;
+}
+
+
+#mapInsert{
+    transition: all 2s;
+    text-align: center;
+
+    /*Zdroj:
+    by Paul Salentiny
+    http://lea.verou.me/css3patterns/#pyramid*/
+    background: linear-gradient(315deg, transparent 75%, #2c873f 0)-10px 0,
+    linear-gradient(45deg, transparent 75%, #2c873f 0)-10px 0,
+    linear-gradient(135deg, #2f6e3b 50%, transparent 0) 0 0,
+    linear-gradient(45deg, #23532f  50%, #2c5630 0) 0 0 #1f3e21;
+    background-size: 20px 20px;
+}
+
+#insertedMap:not(:checked) ~ #mapInsert{
+    color:transparent;
+    background: none;
+    padding: 0;
+}
+
+#insertedMap:checked ~ #mapInsert{
+    color: white;
+    padding: 4vh 4vw;
+}
+
+.styledSelect {
+    height: 29px;
+    overflow: hidden;
+    width: 35%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: transparent;
+}
+.styledSelect select {
+    text-align: center;
+    border: none;
+    font-size: 13pt;
+    height: 29px;
+    padding: 5px;
+    box-shadow: none;
+    color: #c5ffc9;
+    width: 100%;
+    background: #051e1e url("pictures/select.png") no-repeat 96% 0;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #c5ffc9;
+}
+
+
+
+/*for game is h2 not visible*/
+#gameContent h2 {
+    display: none;
+}
+
+
+/*leader board style*/
+#leaderBoardContent table {
+    min-width: 100%;
+    color: #d7f9df;
+}
+
+#leaderBoardContent table thead {
+    background-color: #125634;
+}
+
+#leaderBoardContent table tbody tr:nth-child(odd){
+    background-color: #2f7e51;
+}
+
+#leaderBoardContent table tbody tr:nth-child(even){
+    background-color: #399962;
+}
+
+table * tr > * {
+    padding: 8px 20px;
+}
+
+
+
