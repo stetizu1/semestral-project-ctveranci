@@ -191,9 +191,9 @@
         setState(event.state);
         let menuId = event.state.replace("Content", "");
         if(menuId === "#logo"){
-            let radios = document.getElementsByName("radioButton");
+            let radiosToUncheck = document.getElementsByName("radioButton");
             for(let i = 0; i < radios.length; i++) {
-                currentMenuOption.checked = false;
+                radiosToUncheck[i].checked = false;
             }
         }
         const currentMenuOption = document.querySelector(menuId);
