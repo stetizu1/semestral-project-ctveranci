@@ -29,6 +29,22 @@ class GameMap{
         }
         else {
             this.map = map;
+            this.placeTreesFromMap();
+        }
+    }
+
+    placeTreesFromMap() {
+        for (let i = 0; i < this.ROWS - 1; i++) {
+            for (let j = 0; j < this.COLUMNS - 1; j++) {
+                let current = map[i][j];
+                if (current !== -2){
+                    if(map[i+1][j] === current &&
+                        map[i][j+1] === current &&
+                        map[i+1][j+1] === current){
+                        this.addTreeImage(current, i, j);
+                    }
+                }
+            }
         }
     }
 
@@ -71,18 +87,7 @@ class GameMap{
         this.map[targetRow + 1][targetCol] = treeNumber;
         this.map[targetRow + 1][targetCol + 1] = treeNumber;
 
-        let imgTree = new Image();
-        imgTree.src = "pictures/trees.png";
-
-        let sWidth = 100;
-        let sHeight = 100;
-        let sx = (treeNumber % 3) * sWidth;
-        let sy = Math.floor(treeNumber / 3) * sHeight;
-
-        let x = targetCol * this.FIELD_SIZE + this.START_X;
-        let y = targetRow * this.FIELD_SIZE + this.START_Y;
-
-        this.images.push([imgTree, sx, sy, sWidth, sHeight, x, y]);
+        this.addTreeImage(treeNumber, targetRow, targetCol);
     }
 
     isAlone(row, col){
@@ -181,4 +186,18 @@ class GameMap{
         return false;
     }
 
+    addTreeImage(treeNumber, targetRow, targetCol) {
+        let imgTree = new Image();
+        imgTree.src = "pictures/trees.png";
+
+        let sWidth = 100;
+        let sHeight = 100;
+        let sx = (treeNumber % 3) * sWidth;
+        let sy = Math.floor(treeNumber / 3) * sHeight;
+
+        let x = targetCol * this.FIELD_SIZE + this.START_X;
+        let y = targetRow * this.FIELD_SIZE + this.START_Y;
+
+        this.images.push([imgTree, sx, sy, sWidth, sHeight, x, y]);
+    }
 }

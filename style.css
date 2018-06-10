@@ -18,10 +18,7 @@ body{
 
 header {
     grid-area: head;
-    background: #333 url("pictures/logo.png") no-repeat;
-    background-position-y: center;
-    background-position-x: 20px;
-    background-size: 50px 50px;
+    background: #333;
     padding: 10px;
 
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -53,7 +50,7 @@ footer {
 }
 
 /*title*/
-header h1{
+header h1 {
     font-variant: small-caps;
     margin: 5px;
     text-shadow: -1px -1px 1px #000, 1px 1px 1px #ccc;
@@ -87,10 +84,10 @@ nav .navigation .menu:hover{
     background-color: #1e1e1e;
 }
 
-#logo{
+#logoContent {
     display: block;
-    min-width: 500px;
-    background-color: rgba(215,249,223,0.1);
+    min-width: 50%;
+    background-color: rgba(79, 82, 84, 0.5);
 
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     font-size: 40px;
@@ -98,10 +95,15 @@ nav .navigation .menu:hover{
     text-shadow: 0 1px 0 black;
     text-align: center;
 }
-#logo h2 {
+#logoContent h2 {
     font-variant: small-caps;
     margin: 5px;
     text-shadow: -1px -1px 1px #ccc, 1px 1px 1px #000;
+}
+
+#logo {
+    margin: auto;
+    width: 500px;
 }
 
 #logo div {
@@ -225,7 +227,7 @@ nav .navigation .menu:hover{
 }
 
 /*page style*/
-section:not(#gameContent):not(#logo) {
+section:not(#gameContent):not(#logoContent) {
     padding: 15px;
     min-width: 50%;
     background-color: #051e1e;
@@ -304,7 +306,7 @@ section form fieldset input[type="text"]{
     text-align: center;
 
     opacity: 0.8;
-    border: 0 dashed red;
+    border: 3px solid transparent;
 
     /*Zdroj:
     by Paul Salentiny
@@ -385,5 +387,52 @@ table * tr > * {
     padding: 8px 20px;
 }
 
+
+/*map editor style*/
+#mapEditorContent input[type="radio"]{
+    display: none;
+}
+
+#mapEditorContent label {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background: rgba(107, 107, 107, 0.15) url("pictures/trees.png");
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#mapEditorContent input[type="radio"]:checked + label{
+    background-color: #b8f1d2;
+}
+
+#mapEditorContent > label:nth-child(5){
+    background-position-x: -100px;
+}
+#mapEditorContent > label:nth-child(7) {
+    background-position-x: -200px;
+}
+#mapEditorContent > label:nth-child(9) {
+    background-position-y: -100px;
+}
+#mapEditorContent > label:nth-child(11){
+    background-position-y: -100px;
+    background-position-x: -100px;
+}
+#mapEditorContent > label:nth-child(13) {
+    background-position-y: -100px;
+    background-position-x: -200px;
+}
+#mapEditorContent > label:nth-child(15) {
+    background-position-y: -200px;
+}
+#mapEditorContent > label:nth-child(17){
+    background-position-y: -200px;
+    background-position-x: -100px;
+}
+#mapEditorContent > label:nth-child(19) {
+    background-position-y: -200px;
+    background-position-x: -200px;
+}
 
 

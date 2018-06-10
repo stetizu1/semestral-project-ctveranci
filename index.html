@@ -46,12 +46,14 @@
     </div>
 </nav>
 
-<section id="logo">
+<section id="logoContent">
     <h2>Čtveránci</h2>
-    <div id="redSquare"></div>
-    <div id="blueSquare"></div>
-    <div id="greenSquare"></div>
-    <div id="yellowSquare"></div>
+    <div id="logo">
+        <div id="redSquare"></div>
+        <div id="blueSquare"></div>
+        <div id="greenSquare"></div>
+        <div id="yellowSquare"></div>
+    </div>
 </section>
 
 <section id="introductionContent">
@@ -136,6 +138,31 @@
 
 <section id="mapEditorContent">
     <h2>Editor map</h2>
+
+    <input type="radio" name="treeOption" id="tree0" value="0" checked>
+    <label for="tree0"></label>
+    <input type="radio" name="treeOption" id="tree1" value="1">
+    <label for="tree1"></label>
+    <input type="radio" name="treeOption" id="tree2" value="2">
+    <label for="tree2"></label>
+    <input type="radio" name="treeOption" id="tree3" value="3">
+    <label for="tree3"></label>
+    <input type="radio" name="treeOption" id="tree4" value="4">
+    <label for="tree4"></label>
+    <input type="radio" name="treeOption" id="tree5" value="5">
+    <label for="tree5"></label>
+    <input type="radio" name="treeOption" id="tree6" value="6">
+    <label for="tree6"></label>
+    <input type="radio" name="treeOption" id="tree7" value="7">
+    <label for="tree7"></label>
+    <input type="radio" name="treeOption" id="tree8" value="8">
+    <label for="tree8"></label>
+
+    <svg>
+
+    </svg>
+
+
 </section>
 
 <footer>
@@ -145,7 +172,7 @@
 <script>
 
     //push first site
-    history.pushState("#logo", "#logo");
+    history.pushState("#logoContent", "#logoContent");
 
     //Drag and drop for inserting map
     let dragAndDrop = document.getElementById("mapInsert");
@@ -156,16 +183,18 @@
 
     dragAndDrop.addEventListener("dragenter", () => {
         dragAndDrop.style.opacity = 1;
-        dragAndDrop.style.border = "2px dashed red";
+        dragAndDrop.style.border = "3px solid red";
     });
 
     dragAndDrop.addEventListener("dragleave", () => {
         dragAndDrop.style.opacity = 0.8;
-        dragAndDrop.style.border = "0 dashed red";
+        dragAndDrop.style.border = "3px solid transparent";
     });
 
     dragAndDrop.addEventListener("drop", (event) => {
         event.preventDefault();
+        dragAndDrop.style.border = "3px solid transparent";
+
         const FILES = Array.from(event.dataTransfer.files);
         let file = FILES.length > 0 ? FILES[0] : null;
         let fr = new FileReader();
@@ -203,13 +232,14 @@
     }
     window.addEventListener("popstate", (event) =>{
         setState(event.state);
-        let menuId = event.state.replace("Content", "");
-        if(menuId === "#logo"){
+        if(event.state === "#logoContent"){
             let radiosToUncheck = document.getElementsByName("radioButton");
             for(let i = 0; i < radios.length; i++) {
                 radiosToUncheck[i].checked = false;
             }
+            return;
         }
+        let menuId = event.state.replace("Content", "");
         const currentMenuOption = document.querySelector(menuId);
         currentMenuOption.checked = true;
     });
