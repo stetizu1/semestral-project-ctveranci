@@ -8,8 +8,50 @@
 <section>
     <h1>Dokumentace ke Čtveránkům</h1>
     <article>
-        <h2>...</h2>
+        <h2>Cíl projektu</h2>
+        <p>Cílem projektu bylo vytvořit webovou hru inspirovanou bulánky s jednoduchým map editorem a různými nastaveními hry.</p>
     </article>
+    <article>
+        <h2>Navigace stránky</h2>
+        <p>Při otevření stránky se zobrazí animované logo čtveránků.</p>
+        <p>V aplikaci se může uživatel pohybovat pomocí menu. Dále funguje i přepínání obsahu na základě tlačítka zpět a přepínání položek menu z menu hry.</p>
+    </article>
+    <article>
+        <h2>Popis funkčnosti</h2>
+
+        <article>
+            <h3>Úvod</h3>
+            <p>Uživatel si v úvodu může zobrazit video inspirace této hry - trailer k bulánkům.</p>
+            <p>Dále je zde popis ovládání hry a odkaz na tuto dokumentaci.</p>
+        </article>
+        <article>
+            <h3>Nastavení</h3>
+            <p>Jako první nastavení si může hráč nastavit počet hráčů pro hru.</p>
+            <p>Hráč si může zapsat jméno, pro hru dvou hráčů se může zapsat jméno i druhého hráče.</p>
+            <p>Dále si hráč může přepínat mezi náhodně generovanou mapou a vlastní mapou. Pokud si vybere vlastní mapu, zobrazí se pole, kam se může uživatel přetáhnout soubor - tento soubor získá uložením souboru, který si vygeneruje pomocí editoru map.</p>
+            <p>Jako poslední si hráč může přepínat délku času hry.</p>
+        </article>
+        <article>
+            <h3>Hra</h3>
+            <p>Ve hře se nejdříve zobrazí herní menu. Pomocí tohoto menu si uživatel může buď zapnout hru, nebo přennout do jiných sekcí stránky - do úvodu (kde je ovládání), nastavení nebo žebříčku. Menu se ovládá pomocí šipek a Enter.</p>
+            <p>Ve hře je cílem zabít co nejvíce čtveránků a co nejméně umírat. Po mapě se dá pohybovat a střílet v ní. Na mapě jsou stromy, které nejdou projít ani prostřelit. Hra se ovládá v single playeru pomocí šipek a mezerníku, v multiplayeru levý hráš pomocí WSAD a Z (střelba), pravý hráč pomocí IKJL a M (střelba). PO vypršení času se přejde do konce hry.</p>
+            <p>Na konci hry jsou čtveránci seřazeni dle skóre. Pro single player hru se uloží výsledek do top10 žebříčku v local storage, pokud hráč dosáhl dostatečného skóre. Hráč má na výběr se vrátit do menu nebo začít rovnou další hru.</p>
+        </article>
+
+        <article>
+            <h3>Žebříček</h3>
+            <p>Do žebříčku se ukládají lokální nejlepší výsledky single player her (top 10 pro každý možný čas).</p>
+            <p>V žebříčku jsou vypsaná data z local storage v přehledných tabulkách.</p>
+        </article>
+
+        <article>
+            <h3>Editor map</h3>
+            <p>V map editoru si hráč může vytovřit vlastní herní plochu. Ta jde do hry přesunout pomocí volby v nastavení.</p>
+            <p>Nejdříve si uživatel vybere druh stromu, který chce vytvořit. Pak klikne na levé horní pole místa, kam jej chce položit (strom se položí přes 4 pole). Strom se zorbrazí na mapě jako kolečko s ID. Kliknutím na kolečko se znovu z mapy odstraní.</p>
+            <p>Hotová mapa se může pojmenovat a stáhnout jako [jméno].map pomocí pole a tlačítka níže.</p>
+        </article>
+    </article>
+
 </section>
 </body>
 </html>
