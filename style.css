@@ -475,3 +475,21 @@ table * tr > * {
     border-radius: 5px;
 }
 
+@media only screen and (max-width: 600px) {
+    body{
+        font-size: larger;
+    }
+    #logoContent {
+        min-width: 100%;
+
+    }
+    section:not(#gameContent):not(#logoContent) {
+        min-width: 100%;
+    }
+
+    /*introduction style*/
+    #introductionContent {
+        max-width: 100%;
+    }
+
+}
