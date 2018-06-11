@@ -480,7 +480,7 @@ table * tr > * {
 }
 
 
-@media only screen and (max-width: 940px) {
+@media (max-width: 940px) {
     body{
         grid-template-rows: 75px 75px auto 50px;
         grid-template-columns: 100%;
