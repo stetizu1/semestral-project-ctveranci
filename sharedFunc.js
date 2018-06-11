@@ -140,7 +140,7 @@ const setState = (state) => {
 
     //gameContent reload
     let gameContent = document.getElementById("gameContent");
-    gameContent.innerHTML = "<h2>Hra</h2>";
+    gameContent.innerHTML = "<h2>Hra</h2><div id=\"gameNotSupported\">Hra není podporována pro tuto šířku zobrazení.</div>";
     if(gameWindow !== null){
         gameWindow.destroyWindow();
         gameWindow = null;

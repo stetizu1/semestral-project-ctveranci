@@ -5,7 +5,7 @@ body{
 
     display: grid;
     grid-template-rows: 75px auto 50px;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 30% 70%;
     grid-template-areas:
             "head  nav"
             "section section"
@@ -18,18 +18,18 @@ body{
 
 header {
     grid-area: head;
+    min-width: 150px;
     background: #333;
-    padding: 10px;
-
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     color: #bebebe;
     text-shadow: 0 1px 0 white;
-    text-align: center;
+    padding: 10px 10px 10px 20px;
 }
 
 nav {
     grid-area: nav;
     background-color: #333;
+    min-width: 400px;
 
     color: #e4e4e4;
 }
@@ -235,7 +235,7 @@ section:not(#gameContent):not(#logoContent) {
 }
 
 /*introduction style*/
-#introductionContent {
+#introductionContent , #mapEditorContent{
     color: #caf8d6;
     max-width: 50%;
 }
@@ -368,6 +368,10 @@ select:-moz-focusring {
     display: none;
 }
 
+#gameNotSupported{
+    display: none;
+}
+
 
 /*leader board style*/
 #leaderBoardContent table {
@@ -444,7 +448,7 @@ table * tr > * {
 }
 
 #svgMap {
-    width: 50vw;
+    width: inherit;
     margin: 15px;
 }
 
@@ -475,10 +479,31 @@ table * tr > * {
     border-radius: 5px;
 }
 
-@media only screen and (max-width: 600px) {
+
+@media only screen and (max-width: 940px) {
     body{
-        font-size: larger;
+        grid-template-rows: 75px 75px auto 50px;
+        grid-template-columns: 100%;
+        grid-template-areas:
+                "head"
+                "nav"
+                "section"
+                "foot ";
+
     }
+    section{
+        font-size: large;
+    }
+    #gameNotSupported{
+        display: block;
+        color: #c5ffc9;
+    }
+
+    #gameContent canvas {
+        display: none;
+    }
+
+
     #logoContent {
         min-width: 100%;
 
